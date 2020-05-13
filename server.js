@@ -3,10 +3,14 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const logger = require('morgan');
+const mongoose = require('mongoose');
+// const db = require('./models');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/hometeam', { useNewUrlParser: true });
 
 require('./routes/api_routes.js')(app);
 
@@ -18,12 +22,6 @@ require('./routes/api_routes.js')(app);
 
 // Add API routes
 // app.use('/api', apiRoutes);
-
-const mongoose = require('mongoose');
-// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/reactreadinglist');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/hometeam', { useNewUrlParser: true });
-
-const db = require('./models');
 
 app.listen(PORT, function() {
     console.log('Server listening on PORT ${PORT}');
