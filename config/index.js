@@ -1,0 +1,1 @@
+// We need a secret to sign and validate JWT's. This secret should be a random string that is remembered for your application; it's essentially the password to your JWT's. In config/index.js there's a secret value which is set to "secret" in development and reads from an environment variable in production.
