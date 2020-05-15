@@ -7,7 +7,7 @@ const db = require('../models');
 // const path = require("path");
 
 router.get (['/', '/api'], (req, res, next) => {
-    res.send('Welcome! API is operational.');
+    res.send('Welcome to HomeTeam Server! API is operational.');
 });
 
 router.post('/api/login', (req, res, next) => {

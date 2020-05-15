@@ -53,9 +53,8 @@ const MemberSchema = new Schema({
     password: {
         type: String, 
         required: [true, "A valid password is required"], 
-        match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
-        index: true,
-        validate: [({ length }) => length >= 8, "Password must be at least eight characters."]
+        // match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
+        // validate: [({ length }) => length >= 8, "Password must be at least eight characters."]
     },
 
     theme: String // personalized color choice
