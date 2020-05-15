@@ -1,36 +1,28 @@
 const express = require('express');
-// const apiRoutes = require('./routes/api_routes');
+const routes = require('./routes');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
+const TokenHandler = require('./utils/TokenHandler');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
+const cors = require('cors');
+const compression = require('compression');
 
-// const db = require('./models');
 
-const jwTokenHandler = (configs)) => (req, res, next) => {
-    if (configs.whitelist.includes(req.url)) {
-        next();
-    } else {
-        const {token} = req.cookies;
-        if (!token) return res.sendStatus(401);
-        jwt.verify(token, 'shhh', (err, data) => {
-            if (err) return res.sendStatus(403);
-            req.user = data;
-        })
-        next();
-    }
-}
-
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));  // changed from true
 app.use(cookieParser());
+app.use(TokenHandler({whitelist: ['/', '/api', '/api/login', '/api/registration'] }));
+app.use(helmet());
+app.use(cors({origin: 'http://localhost:3000'}));
+app.use(compression());
+app.use(logger('dev'));
+
+app.use(routes);
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/hometeam', { useNewUrlParser: true });
-
-require('./routes/api_routes.js')(app);
 
 app.listen(PORT, function() {
     console.log('Server listening on PORT ${PORT}');
@@ -41,7 +33,3 @@ app.listen(PORT, function() {
 //     app.use(express.static('client/build'));
 // }
 // app.use(express.static('public'));
-
-// Add API routes
-// app.use('/api', apiRoutes);
-
