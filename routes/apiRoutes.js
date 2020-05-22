@@ -12,12 +12,13 @@ router.get (['/', '/api'], (req, res, next) => {
 
 router.post('/api/login', (req, res, next) => {
     const {username, password} = req.body;
-    db.Member.find({username: username}).then((user) => {
-
+    db.Member.findOne({username: username}).then((user) => {
         bcrypt.compare(password, user.password, function(err, result) {
             if (result) {
-                const token = jwt.sign({...user}, 'shhh')
-                console.log('token', token)
+                const token = jwt.sign({...user}, process.env.JWT_SECRET)
+                // console.log('token', token)
+                delete user.password
+                //const {password, ...rest} = user;
                 res
                   .cookie('token', token, {httpOnly: true})
                   .json(user);
@@ -25,22 +26,22 @@ router.post('/api/login', (req, res, next) => {
                 res.sendStatus(401)
             }
         });
-
     })
-    const userId = '123';
-    const token = jwt.sign({username, userId}, 'shhh');
-    console.log('token', token);
+    // const userId = '123';
+    // const token = jwt.sign({username, userId}, 'shhh');
+    // console.log('token', token);
 
-    res
-      .cookie('token', token, {httpOnly: true})
-      .send('You are logged in...');
+    // res
+    //   .cookie('token', token, {httpOnly: true})
+    //   .send('You are logged in...');
 });
 
 router.post('/api/register', (req, res, next) => {
     const {username, password} = req.body;
-    db.Member.find({username: username}).then((user) => {
+    db.Member.findOne({username: username}).then((user) => {
+        // console.log(user);
         if (user) {
-            res.sendStatus(402).send('username exists')
+            res.status(400).send('username exists')
         } else {
             bcrypt.genSalt(10, function(err, salt) {
                 bcrypt.hash(password, salt, function(err, hash) {
@@ -49,8 +50,13 @@ router.post('/api/register', (req, res, next) => {
                         username,
                         password: hash
                     })
-                })
-            })
+                    //, {password: 0}
+                    .then((member) => {
+                        delete member.password;
+                        res.json(member);
+                    });
+                });
+            });
         }
     })
 });

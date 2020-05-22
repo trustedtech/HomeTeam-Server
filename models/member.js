@@ -11,14 +11,14 @@ const MemberSchema = new Schema({
     firstname: {
         type: String, 
         trim: true,
-        required: [true, "A valid first name is required"], 
+        // required: [true, "A valid first name is required"], 
         // match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
     },
 
     lastname: {
         type: String, 
         trim: true,
-        required: [true, "A valid last name is required"], 
+        // required: [true, "A valid last name is required"], 
         // match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
     },
 
@@ -35,8 +35,8 @@ const MemberSchema = new Schema({
         type: String, 
         lowercase: true,
         unique: true, 
-        required: [true, "A valid email address is required"], 
-        match: [/\S+@\S+\.\S+/, 'is invalid'], 
+        // required: [true, "A valid email address is required"], 
+        // match: [/\S+@\S+\.\S+/, 'is invalid'], 
         index: true
     },
 
@@ -46,7 +46,7 @@ const MemberSchema = new Schema({
         unique: true, 
         trim: true,
         required: [true, "A valid username is required"], 
-        match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
+        // match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
         index: true
     },
 

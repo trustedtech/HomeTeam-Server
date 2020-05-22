@@ -6,7 +6,7 @@ const TokenHandler = (configs) => (req, res, next) => {
     } else {
         const {token} = req.cookies;
         if (!token) return res.sendStatus(401);
-        jwt.verify(token, 'shhh', (err, data) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
             if (err) return res.sendStatus(403);
             req.user = data;
         })
