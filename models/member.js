@@ -11,14 +11,14 @@ const MemberSchema = new Schema({
     firstname: {
         type: String, 
         trim: true,
-        required: [true, "A valid first name is required"], 
+        // required: [true, "A valid first name is required"], 
         // match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
     },
 
     lastname: {
         type: String, 
         trim: true,
-        required: [true, "A valid last name is required"], 
+        // required: [true, "A valid last name is required"], 
         // match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
     },
 
@@ -33,29 +33,28 @@ const MemberSchema = new Schema({
 
     email: {
         type: String, 
-        lowercase: true,
+        // lowercase: true,
         unique: true, 
-        required: [true, "A valid email address is required"], 
-        match: [/\S+@\S+\.\S+/, 'is invalid'], 
+        // required: [true, "A valid email address is required"], 
+        // match: [/\S+@\S+\.\S+/, 'is invalid'], 
         index: true
     },
 
     username: {
         type: String, 
-        lowercase: true, 
+        // lowercase: true, 
         unique: true, 
         trim: true,
         required: [true, "A valid username is required"], 
-        match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
+        // match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
         index: true
     },
 
     password: {
         type: String, 
         required: [true, "A valid password is required"], 
-        match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
-        index: true,
-        validate: [({ length }) => length >= 8, "Password must be at least eight characters."]
+        // match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
+        // validate: [({ length }) => length >= 8, "Password must be at least eight characters."]
     },
 
     theme: String // personalized color choice
