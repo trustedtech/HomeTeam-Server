@@ -33,7 +33,7 @@ const MemberSchema = new Schema({
 
     email: {
         type: String, 
-        lowercase: true,
+        // lowercase: true,
         unique: true, 
         // required: [true, "A valid email address is required"], 
         // match: [/\S+@\S+\.\S+/, 'is invalid'], 
@@ -42,7 +42,7 @@ const MemberSchema = new Schema({
 
     username: {
         type: String, 
-        lowercase: true, 
+        // lowercase: true, 
         unique: true, 
         trim: true,
         required: [true, "A valid username is required"], 

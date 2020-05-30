@@ -12,16 +12,18 @@ router.get (['/', '/api'], (req, res, next) => {
 
 router.post('/api/login', (req, res, next) => {
     const {username, password} = req.body;
-    db.Member.findOne({username: username}).then((user) => {
-        bcrypt.compare(password, user.password, function(err, result) {
+    db.Member.findOne({username: username}).then((member) => {
+        console.log(member);
+        bcrypt.compare(password, member.password, function(err, result) {
             if (result) {
-                const token = jwt.sign({...user}, process.env.JWT_SECRET)
+                delete member.email;                
+                delete member.password;                
+                const token = jwt.sign({...member}, process.env.JWT_SECRET)
                 // console.log('token', token)
-                delete user.password
-                //const {password, ...rest} = user;
+                //const {password, ...rest} = member;
                 res
                   .cookie('token', token, {httpOnly: true})
-                  .json(user);
+                  .json(member);
             } else {
                 res.sendStatus(401)
             }
@@ -36,22 +38,26 @@ router.post('/api/login', (req, res, next) => {
     //   .send('You are logged in...');
 });
 
-router.post('/api/register', (req, res, next) => {
-    const {username, password} = req.body;
-    db.Member.findOne({username: username}).then((user) => {
-        // console.log(user);
-        if (user) {
+router.post('/api/signup', (req, res, next) => {
+    const {firstname, lastname, email, username, password} = req.body;
+    db.Member.findOne({username: username}).then((member) => {
+        // console.log(member);
+        if (member) {
             res.status(400).send('username exists')
         } else {
             bcrypt.genSalt(10, function(err, salt) {
                 bcrypt.hash(password, salt, function(err, hash) {
                     if (err) next(err);
                     db.Member.create({
+                        firstname,
+                        lastname,
+                        email,
                         username,
                         password: hash
                     })
                     //, {password: 0}
                     .then((member) => {
+                        delete member.email;                
                         delete member.password;
                         res.json(member);
                     });
@@ -61,8 +67,8 @@ router.post('/api/register', (req, res, next) => {
     })
 });
 
-router.get('/protected/dashboard', (req, res, next) => {
-    console.log('req.user', req.user);
+router.get('/dashboard', (req, res, next) => {
+    console.log('req.member', req.member);
 
     res.send('Here is the dashboard (protected)')
 });

@@ -25,9 +25,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use(cookieParser());
-app.use(TokenHandler({whitelist: ['/', '/api', '/api/login', '/api/register'] }));
+app.use(TokenHandler({whitelist: ['/', '/api', '/api/login', '/api/signup'] }));
 app.use(helmet());
-app.use(cors());
+app.use(cors({origin:'http://localhost:3000'}));
 app.use(compression());
 app.use(logger('dev'));
 
